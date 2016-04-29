@@ -39,3 +39,48 @@ difference(){
 
 }
 }
+
+module outerBox(){
+    $fn=30;
+    cornerRadius = 1.25;
+    boxHeight = 85;
+    boxWidth = 30;
+    difference() {
+    translate([cornerRadius, 0])
+    minkowski(){
+        square([boxWidth-cornerRadius, 
+                boxHeight-cornerRadius]);
+        circle(r=cornerRadius);
+    }
+    
+    // Square off the bottom. Leave the radiuses on top.
+    translate([-cornerRadius, -cornerRadius])
+    square([boxWidth+cornerRadius*2, cornerRadius]);
+    }
+}
+
+// the curvyOnlay has a bounding box of [57, 49]
+module curvyOnlay() {
+union(){
+translate([55*sin(30),-17.5*sin(30)])
+difference() {
+    rotate([0,0,30])
+    union(){
+    square([40,40]);
+    translate([0,25])
+    circle(r=15);
+    translate([40,25])
+    circle(r=15);
+    }
+    
+    translate([29.5,0])
+    square([30, 100]);
+    
+    translate([-30,0])
+    square([100, 8.75]);
+}
+
+translate([42.0,0])
+square([15,8.5]);
+}
+}
