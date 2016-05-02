@@ -1,7 +1,7 @@
 // Globals :(
-polyMaxX = 60;
-polyMaxY = 45;
-halfBoxHeight = 17.5;
+polyMaxX = 62.5;
+polyMaxY = 47.5;
+halfBoxHeight = 25;
 bezelHeight = 2.5;
 
 module batteryPoly() {
@@ -14,9 +14,9 @@ points = [
     [5, 0],
     [17, 0],
     [22, 2.5],
-    [60, 2.5],
-    [60, 45],
-    [2.5, 45]
+    [62.5, 2.5],
+    [62.5, 47.5],
+    [2.5, 47.5]
 ];
 
 newpoints = [for (i=points) i-[polyMaxX, polyMaxY]];
@@ -67,7 +67,7 @@ linear_extrude( height=bezelHeight,
 module batteryPack() {
 
 // I want the inset to be smaller than the bezel so there will be a flat top to strengthen it. I accomplish this by tweaking the scale to make the inset uniformly smaller than the bezel.
-insetWidth = 1+bezelHeight;    
+insetWidth = 2.5+bezelHeight;    
 insetToolScale = [1-(insetWidth/polyMaxX),
                   1-(insetWidth/polyMaxY),
                   1];
@@ -125,26 +125,25 @@ difference(){
     }
 } //difference
 
-// The dimensions and placement of the following objects are determined by eyeballing.
-// TODO: Fix the dimensions and placement of the following as ratios related to batteryPoly.
+// Additive decorations follow
 
 // Left side knob
-translate([-57.5, 0, 5])
+translate([-(polyMaxX-5), 0, halfBoxHeight-12.5])
 sphere(r=5);
 
 // Right side knob
-translate([57.5, 0, 5])
+translate([(polyMaxX-5), 0, halfBoxHeight-12.5])
 sphere(r=5);
 
 //Left top knob
-translate([-43,0,16])
+translate([-43, 0, halfBoxHeight-1.5])
 difference(){
     sphere(r=2.5);
     cylinder(r=1, h=2.5);
 }
 
 //Right top knob
-translate([43,0,16])
+translate([43, 0, halfBoxHeight-1.5])
 difference(){
     sphere(r=2.5);
     cylinder(r=1, h=2.5);
@@ -154,4 +153,61 @@ difference(){
 
 } //module batteryPack
 
-batteryPack();
+// Make two battery packs, a top and a bottom.
+// Make the top first, then use it as a tool to shape the bottom.
+
+module boxTop() {
+difference() {
+    batteryPack();
+    
+    // DEBUG: Cut away half the cube so I can see where the holes go
+    *translate([0,-polyMaxY-0.5,-(halfBoxHeight+bezelHeight)-0.5])
+    cube([polyMaxX+1, 
+          2*polyMaxY+1, 
+          2*(halfBoxHeight+bezelHeight)+1]);
+    
+    // Cut off the bottom where the top will stop, probably at the beginning of the bezel or just before
+    translate([0, 0,-(halfBoxHeight+bezelHeight/2+1/2)])
+    cube([(2*polyMaxX)+10, 
+          (2*polyMaxY)+10, 
+          bezelHeight+1],
+          center=true);
+
+    // Cut the hole into the top that makes this a box
+    translate([0,0,-3])
+    cube([2*(polyMaxX-7.5), 
+          2*(polyMaxY-7.5), 
+          (2*halfBoxHeight)-3], 
+          center=true);
+}
+}
+
+module boxBottom() {
+difference() {
+    batteryPack();
+    
+    // Cut away the lid, leaving the inner box
+    // This leaves an infintesimal shell in preview, ugh
+    boxTop();
+    
+    // DEBUG: Cut away half the cube so I can see where the holes go
+    *translate([0,-polyMaxY-0.5,-(halfBoxHeight+bezelHeight)-0.5])
+    cube([polyMaxX+1, 
+          2*polyMaxY+1, 
+          2*(halfBoxHeight+bezelHeight)+1]);
+    
+    
+    // Cut the hole into the bottom that makes this a box
+    translate([0,0,3])
+    cube([2*(polyMaxX-12), 
+          2*(polyMaxY-12), 
+          (2*halfBoxHeight)], 
+          center=true);
+}
+}
+
+translate([75, 50, 0])
+boxTop();
+
+translate([-75, -50, 0])
+boxBottom();
