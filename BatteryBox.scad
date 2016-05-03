@@ -198,6 +198,9 @@ difference() {
     
     
     // Cut the hole into the bottom that makes this a box
+    // Translate up 3mm to leave a 5.5mm bottom wall
+    // (3mm + 2.5mm bezel).  That's plenty to stabilize
+    // the heat-set nuts I plan to use.
     translate([0,0,3])
     cube([2*(polyMaxX-12), 
           2*(polyMaxY-12), 
@@ -211,3 +214,18 @@ boxTop();
 
 translate([-75, -50, 0])
 boxBottom();
+
+
+// The boxBottom's inside dimensions are:
+// 44mm z
+// 101mm x
+// 61mm y
+//
+// The side walls are approximately 5mm thick
+// the top is 3mm on average and the bottom is
+// 5mm in the center.  (The bottom edges are
+// tapered from 2.5mm to nothing.)
+//
+// That's all subject to change with the magic numbers
+// in my code.  I computed it all with a desk calculator
+// so maybe someday I'll add echo's with the formulae.
