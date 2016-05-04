@@ -189,12 +189,74 @@ module diskPack(){
 difference() {
     diskPackSolid();
     
-    translate([5, -0.1, 5])
+    translate([5.75, -0.1, 5])
     cube([30, 60.1, 75]);
 }
 }
 
+// Not debugging like the others.  Derp.
 diskPack();
+
+module drawer() {
+difference() {
+    cube([30, 60, 75]);
+    
+    translate([2.5, 2.5, 2.5])
+    cube([27.6, 55, 70]);
+}
+}
+
+translate([-50, -10, 5])
+drawer();
+
+module frontAndBackTrimPart() {
+union() {
+    difference() {
+        linear_extrude(height=7, scale=[.75, .9])
+        square([17, 82.5], center=true);
+        
+        translate([1,-(70.25/2),3])
+        cube([6, 70.25, 5]);
+        
+        translate([-7,-(70.25/2),3])
+        cube([6, 70.25, 5]);
+    }
+    
+    translate([1,70.25/2,2.5])
+    rotate([90,0,0])
+    linear_extrude(height=70.25)
+    polygon(points=[[0,0], [0, 3.5], [3.5, 3.5]]);
+    
+    translate([-1,-(70.25/2),2.5])
+    rotate([90,0,180])
+    linear_extrude(height=70.25)
+    polygon(points=[[0,0], [0, 3.5], [3.5, 3.5]]);
+}
+}
+
+//frontAndBackTrimPart();
+
+module frontAndBackTrim() {
+union() {
+linear_extrude(height=1)
+boxPoly([35, 82.5]);
+
+translate([35-(17/2)+0.75, (82.5/2), 0])  
+frontAndBackTrimPart();
+
+translate([(17/2)+0.75, (82.5/2), 0])  
+frontAndBackTrimPart();
+}
+}
+
+translate([-52.5, -10, 0])
+rotate([90,0,0])
+frontAndBackTrim();
+
+translate([38.75, 64, 0])
+rotate([90,0,180])
+frontAndBackTrim();
+
 
 // Render quality settings
 $fa=2; $fs=0.1;
