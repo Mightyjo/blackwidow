@@ -76,10 +76,10 @@ insetToolScale = [1-(insetWidth/polyMaxX),
 divotToolScale = [5,10,2.5];
 
 // DEBUG: comment this and set $fa, $fs for STL render
-$fn = 10;
+//$fn = 10;
     
 // PROD: comment this and set $fn for preview
-//$fa = 2; $fs = 0.2;
+$fa = 2; $fs = 0.2;
 
 union(){
 
@@ -91,10 +91,14 @@ difference(){
     }
     
     // Top inset cutting tool
-    translate([0,0,halfBoxHeight])
-    scale(insetToolScale)
-    linear_extrude( height=3 ) batteryPoly();
-    
+    translate([0,0,halfBoxHeight+1])
+    minkowski(){
+        linear_extrude( height=3 ) 
+        offset(delta=-(2.5+bezelHeight+1))
+        batteryPoly();
+        
+        sphere(r=1, $fn=20);
+    }    
     // Left divot cutting tool
     difference(){
         translate([-35, 0, halfBoxHeight])
@@ -229,3 +233,11 @@ boxBottom();
 // That's all subject to change with the magic numbers
 // in my code.  I computed it all with a desk calculator
 // so maybe someday I'll add echo's with the formulae.
+
+//minkowski(){
+//    scale([.9, .9, 1])
+//    linear_extrude( height=3 ) 
+//    batteryPoly();
+//    
+//    sphere(r=3, $fn=20);
+//}
