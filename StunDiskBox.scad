@@ -1,3 +1,6 @@
+// Render quality settings
+$fa=2; $fs=0.1;
+
 // Helper funtions for using $f{a,s,n} in my code
 function fragments_for_r(r, fn=0, fa=12, fs=2) = 
     fn > 0.0 ? 
@@ -147,10 +150,14 @@ module diskPackSolid() {
         linear_extrude(height=1.51)
         cardioidPoly(r=13);
         
-        translate([42, 2, 2])
+        translate([43, 2, 2])
         rotate([90,0,90])
-        linear_extrude(height=1.51)
-        obnoxiousInlay();
+        minkowski() {
+            linear_extrude(height=1)
+            offset(delta=-1) obnoxiousInlay();
+            
+            sphere(r=1, $fn = 20);
+        }
     }
     
     // The inside box is offset toward the y-axis
@@ -194,8 +201,7 @@ difference() {
 }
 }
 
-// Not debugging like the others.  Derp.
-diskPack();
+//diskPack();
 
 module drawer() {
 difference() {
@@ -206,8 +212,8 @@ difference() {
 }
 }
 
-translate([-50, -10, 5])
-drawer();
+// Translate for prettiness beside the case while debugging
+//translate([-50, -10, 5]) drawer();
 
 module frontAndBackTrimPart() {
 union() {
@@ -215,12 +221,23 @@ union() {
         linear_extrude(height=7, scale=[.75, .9])
         square([17, 82.5], center=true);
         
-        translate([1,-(70.25/2),3])
-        cube([6, 70.25, 5]);
+        translate([0,-(70.25/2)+3,7])
+        rotate([0, 90, 0])
+        cylinder(h=14, r=3, center=true);
         
-        translate([-7,-(70.25/2),3])
-        cube([6, 70.25, 5]);
+        translate([0,(70.25/2)-3,7])
+        rotate([0, 90, 0])
+        cylinder(h=14, r=3, center=true);
+        
+        translate([1,-(64.25/2),4])
+        cube([6, 64.25, 5]);
+        
+        translate([-7,-(64.25/2),4])
+        cube([6, 64.25, 5]);
     }
+    
+    translate([-1,-(70.25/2),0])
+    cube([2, 70.25, 7]);
     
     translate([1,70.25/2,2.5])
     rotate([90,0,0])
@@ -249,14 +266,36 @@ frontAndBackTrimPart();
 }
 }
 
-translate([-52.5, -10, 0])
-rotate([90,0,0])
+// Uncomment to check final proportions and for PNGs
+// Assumes the diskPack and drawer debugs are both on
+//
+//    translate([-52.5, -10, 0])
+//    rotate([90,0,0])
+//    frontAndBackTrim();
+//
+//    translate([38.75, 64, 0])
+//    rotate([90,0,180])
+//    frontAndBackTrim();
+//
+
+forRealp = false;
+forRealp = true;
+
+if(forRealp) {
+// This build needs some help on the platter
+translate([5, 0, 65])
+rotate([-90, 0, 0])
+diskPack();
+
+translate([-65, 0, 0])
+rotate([0, -90, -90])
+drawer();
+
+translate([-(35+1.25), -5, 0])
+rotate([0, 0, -90])
 frontAndBackTrim();
 
-translate([38.75, 64, 0])
-rotate([90,0,180])
+translate([35+1.25, 85+1.25+5, 0])
+rotate([0, 0, 90])
 frontAndBackTrim();
-
-
-// Render quality settings
-$fa=2; $fs=0.1;
+}
