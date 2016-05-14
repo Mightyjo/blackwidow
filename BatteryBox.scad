@@ -186,13 +186,36 @@ difference() {
 }
 }
 
+module boxBottomCuttingTool() {
+difference() {
+    // Start with a box the same height as the boxTop but a little larger in X and Y.
+    cube([(2*polyMaxX)+10,
+          (2*polyMaxY)+10,
+          2*(halfBoxHeight+bezelHeight)],
+          center=true);
+    
+    // Cut off the bottom at the same spot as we did for boxTop.
+    translate([0, 0,-(halfBoxHeight+bezelHeight/2+1/2)])
+    cube([(2*polyMaxX)+10, 
+          (2*polyMaxY)+10, 
+          bezelHeight+1],
+          center=true);
+
+    // Cut a slightly smaller hole that we did for boxTop so the top will go on easily.
+    translate([0,0,-3.25])
+    cube([2*(polyMaxX-7.5)-0.5, 
+          2*(polyMaxY-7.5)-0.5, 
+          (2*halfBoxHeight)-3], 
+          center=true);
+}
+}
+
 module boxBottom() {
 difference() {
     batteryPack();
     
-    // Cut away the lid, leaving the inner box
-    // This leaves an infintesimal shell in preview, ugh
-    boxTop();
+    // Cut away the lid
+    boxBottomCuttingTool();
     
     // DEBUG: Cut away half the cube so I can see where the holes go
     *translate([0,-polyMaxY-0.5,-(halfBoxHeight+bezelHeight)-0.5])

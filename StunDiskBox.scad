@@ -107,13 +107,13 @@ difference() {
 module obnoxiousInlay() {
     // We're recreating the cuts made to the box as a whole, so duplicate up here - with some offset - the solid tools used to cut the diskPack.  Then we'll use this to cut the disk pack too. Inception!
     difference() {
-        square([40, 80]);
+        square([40, 96]);
         
-        translate([0, 47.5])
+        translate([0, 67.5])
         rotate([0,0,60])
         square([50, 40]);
         
-        translate([9, 68.5,  0])
+        translate([9, 86,  0])
         rotate([0, 0, 35])
         cardioidPoly(r=16);
         
@@ -139,15 +139,15 @@ module diskPackSolid() {
         translate([0,65,0])
         rotate([90,0,0]) 
         linear_extrude(height=65)
-        boxPoly([42, 85]);
+        boxPoly([42, 101]);
         
-        translate([-1,0,50])
+        translate([-1,0,70])
         rotate([60, 0, 0])
         cube([50,80,50]);
         
-        translate([41.75, 11, 68])
+        translate([41.75, 11, 86])
         rotate([90, -35, 90])
-        linear_extrude(height=1.51)
+        linear_extrude(height=1.52)
         cardioidPoly(r=13);
         
         translate([43, 2, 2])
@@ -164,10 +164,10 @@ module diskPackSolid() {
     translate([2.5,65,0])
     rotate([90,0,0])
     linear_extrude(height=65)
-    boxPoly([35, 82.5]);
+    boxPoly([35, 98.5]);
     
     // Fill in part of the gap on the outer box near x=0
-    cube([2.5, 30, 80]);
+    cube([2.5, 30, 96]);
     
     // Fill in part of the gap on the outer box near
     // x=100.  This is tricky because the Minkowski
@@ -178,9 +178,9 @@ module diskPackSolid() {
     // The width of the cube should be 1mm - 1.5mm less
     // that the remaining extent of the outer box.  
     translate([38.75, 0, 0])
-    cube([3, 30, 72.5]);
+    cube([3, 30, 86]);
     
-    translate([40.5, 9, 57])
+    translate([40.5, 9, 75])
     rotate([0,90,0])
     button();
     
@@ -197,7 +197,7 @@ difference() {
     diskPackSolid();
     
     translate([5.75, -0.1, 5])
-    cube([30, 60.1, 75]);
+    cube([30, 60.1, 91]);
 }
 }
 
@@ -205,10 +205,10 @@ difference() {
 
 module drawer() {
 difference() {
-    cube([30, 60, 75]);
+    cube([29.75, 59.75, 90.75]);
     
     translate([2.5, 2.5, 2.5])
-    cube([27.6, 55, 70]);
+    cube([27.6, 55, 86]);
 }
 }
 
@@ -219,34 +219,34 @@ module frontAndBackTrimPart() {
 union() {
     difference() {
         linear_extrude(height=7, scale=[.75, .9])
-        square([17, 82.5], center=true);
+        square([17, 98.5], center=true);
         
-        translate([0,-(70.25/2)+3,7])
+        translate([0,-(85.25/2)+3,7])
         rotate([0, 90, 0])
         cylinder(h=14, r=3, center=true);
         
-        translate([0,(70.25/2)-3,7])
+        translate([0,(85.25/2)-3,7])
         rotate([0, 90, 0])
         cylinder(h=14, r=3, center=true);
         
-        translate([1,-(64.25/2),4])
-        cube([6, 64.25, 5]);
+        translate([1,-(80.25/2),4])
+        cube([6, 80.25, 5]);
         
-        translate([-7,-(64.25/2),4])
-        cube([6, 64.25, 5]);
+        translate([-7,-(80.25/2),4])
+        cube([6, 80.25, 5]);
     }
     
-    translate([-1,-(70.25/2),0])
-    cube([2, 70.25, 7]);
+    translate([-1,-(86.25/2),0])
+    cube([2, 86.25, 7]);
     
-    translate([1,70.25/2,2.5])
+    translate([1,86.25/2,2.5])
     rotate([90,0,0])
-    linear_extrude(height=70.25)
+    linear_extrude(height=86.25)
     polygon(points=[[0,0], [0, 3.5], [3.5, 3.5]]);
     
-    translate([-1,-(70.25/2),2.5])
+    translate([-1,-(86.25/2),2.5])
     rotate([90,0,180])
-    linear_extrude(height=70.25)
+    linear_extrude(height=86.25)
     polygon(points=[[0,0], [0, 3.5], [3.5, 3.5]]);
 }
 }
@@ -256,12 +256,12 @@ union() {
 module frontAndBackTrim() {
 union() {
 linear_extrude(height=1)
-boxPoly([35, 82.5]);
+boxPoly([35, 98.5]);
 
-translate([35-(17/2)+0.75, (82.5/2), 0])  
+translate([35-(17/2)+0.75, (98.5/2), 0])  
 frontAndBackTrimPart();
 
-translate([(17/2)+0.75, (82.5/2), 0])  
+translate([(17/2)+0.75, (98.5/2), 0])  
 frontAndBackTrimPart();
 }
 }
@@ -291,11 +291,11 @@ translate([-65, 0, 0])
 rotate([0, -90, -90])
 drawer();
 
-translate([-(35+1.25), -5, 0])
+translate([-(50+1.25), -5, 0])
 rotate([0, 0, -90])
 frontAndBackTrim();
 
-translate([35+1.25, 85+1.25+5, 0])
+translate([40+1.25, 101+5, 0])
 rotate([0, 0, 90])
 frontAndBackTrim();
 }
