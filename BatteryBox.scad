@@ -229,18 +229,58 @@ difference() {
     // (3mm + 2.5mm bezel).  That's plenty to stabilize
     // the heat-set nuts I plan to use.
     translate([0,0,3])
-    cube([2*(polyMaxX-12), 
-          2*(polyMaxY-12), 
+    cube([2*(polyMaxX-10.5), 
+          2*(polyMaxY-10.5), 
           (2*halfBoxHeight)], 
           center=true);
 }
 }
 
 translate([75, 50, 0])
-boxTop();
+difference() {
+    boxTop();
+    
+    translate([0,0,((2*halfBoxHeight)-3)/2+(bezelHeight+6)/2-3])
+    cube([(2*polyMaxX)+10,
+          (2*polyMaxY)+10,
+          bezelHeight+6],
+           center=true);
+}
+
+translate([75, -50, 0])
+difference() {
+    boxTop();
+    
+    translate([0,0,-3])
+    cube([(2*polyMaxX)+10,
+          (2*polyMaxY)+10,
+          (2*halfBoxHeight)-3],
+           center=true);
+}
 
 translate([-75, -50, 0])
-boxBottom();
+difference() {
+    boxBottom();
+    
+    translate([0, 0,-(halfBoxHeight+bezelHeight/2+1/2)])
+    cube([(2*polyMaxX)+10, 
+          (2*polyMaxY)+10, 
+          bezelHeight+1],
+          center=true);
+    
+}
+
+translate([-75, 50, 0])
+difference() {
+    
+    boxBottom();
+    
+    translate([0, 0, (bezelHeight/2)+1/2])
+    cube([(2*polyMaxX)+10,
+          (2*polyMaxY)+10,
+          (2*halfBoxHeight)+bezelHeight+1],
+           center=true);
+}
 
 
 // The boxBottom's inside dimensions are:
