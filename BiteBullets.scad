@@ -16,6 +16,9 @@ module grooveTool() {
     }
 }
 
+*translate([0,0,10])
+grooveTool();
+
 difference(){
 union(){
     linear_extrude(height=8, scale=0.65) 
