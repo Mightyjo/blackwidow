@@ -38,3 +38,17 @@ module classicBite() {
 }
 
 classicBite();
+/*
+for(i = [0:9]) 
+{
+    translate([i*(tube_radius*2+1),0,tube_radius])
+    rotate([-90,-90,0])
+    classicBite();
+}
+
+translate([-20, -25,-0.25])
+cube([250, 15, 0.5]);
+
+translate([-20, -50,-0.25])
+cube([250, 15, 0.5]);
+*/
