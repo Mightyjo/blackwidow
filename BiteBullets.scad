@@ -36,8 +36,11 @@ module widowBite() {
         }
     }
 
+    translate([0,0,7.6])
+    cylinder(r=2.5, h=0.6);
+
     translate([0,0,-50])
-    cylinder(r=2.5, h=70);
+    cylinder(r=2, h=70);
 
     translate([0,0,-2])
     grooveTool();
@@ -51,6 +54,12 @@ module widowBite() {
         cube([5,3,3], center=true);
         sphere(r=1);
     }
+    
+    translate([7.5,0,-7])
+    minkowski() {
+        cube([5,3.5,3.5], center=true);
+        sphere(r=1);
+    }
 
     translate([0,0, -40])
     rotate([90,0,0])
@@ -62,9 +71,19 @@ module widowBite() {
         cube([5,3,3], center=true);
         sphere(r=1);
     }
+    
+    translate([7.5,0,-40])
+    minkowski() {
+        cube([5,3.5,3.5], center=true);
+        sphere(r=1);
+    }
 
     translate([0,0,-47])
     grooveTool();
+
+    translate([0,0,-50])
+    cylinder(r=2.5, h=0.6);
+
 
     }
 }
